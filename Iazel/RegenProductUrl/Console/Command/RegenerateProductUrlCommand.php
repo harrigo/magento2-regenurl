@@ -1,6 +1,7 @@
 <?php
 namespace Iazel\RegenProductUrl\Console\Command;
 
+use Braintree\Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
@@ -69,7 +70,9 @@ class RegenerateProductUrlCommand extends Command
 
     public function execute(InputInterface $inp, OutputInterface $out)
     {
-        if (!$this->state->getAreaCode()) {
+        try{
+            $this->state->getAreaCode();
+        }catch ( \Magento\Framework\Exception\LocalizedException $e){
             $this->state->setAreaCode('adminhtml');
         }
 
